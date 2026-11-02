@@ -1001,5 +1001,64 @@
     "{Name}": "JDGJ78",
     "{Path}": "Lists/test/",
     "{VersionNumber}": "1.0"
+  },
+  {
+    "@odata.etag": "\"1\"",
+    "Author": {
+      "@odata.type": "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+      "Claims": "i:0#.f|membership|siti.hajar@reservoirlink.com",
+      "Department": "IT",
+      "DisplayName": "Siti Hajar UMAR",
+      "Email": "siti.hajar@reservoirlink.com",
+      "JobTitle": "INTERNSHIP",
+      "Picture": "https://reservoirlink.sharepoint.com/sites/MSSites/_layouts/15/UserPhoto.aspx?Size=L&AccountName=siti.hajar@reservoirlink.com"
+    },
+    "Author#Claims": "i:0#.f|membership|siti.hajar@reservoirlink.com",
+    "Brand": "dell",
+    "Company": {
+      "@odata.type": "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedReference",
+      "Id": 1,
+      "Value": "RLSB"
+    },
+    "Company#Id": 1,
+    "Company_x0020_Copy": "RLSB",
+    "Created": "2026-11-02T09:02:16Z",
+    "Editor": {
+      "@odata.type": "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+      "Claims": "i:0#.f|membership|siti.hajar@reservoirlink.com",
+      "Department": "IT",
+      "DisplayName": "Siti Hajar UMAR",
+      "Email": "siti.hajar@reservoirlink.com",
+      "JobTitle": "INTERNSHIP",
+      "Picture": "https://reservoirlink.sharepoint.com/sites/MSSites/_layouts/15/UserPhoto.aspx?Size=L&AccountName=siti.hajar@reservoirlink.com"
+    },
+    "Editor#Claims": "i:0#.f|membership|siti.hajar@reservoirlink.com",
+    "ID": 31,
+    "ItemInternalId": "31",
+    "Model": "hajar",
+    "Modified": "2026-11-02T09:02:16Z",
+    "Status": {
+      "@odata.type": "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedReference",
+      "Id": 2,
+      "Value": "In Stock"
+    },
+    "Status#Id": 2,
+    "Title": "jdhsj",
+    "Workbase": "kl",
+    "{ContentType}": {
+      "@odata.type": "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedContentType",
+      "Id": "0x0100711E667B61FA0141B0BDBCE876AB919B006559A9E137497A479859325B95496DE1",
+      "Name": "Item"
+    },
+    "{ContentType}#Id": "0x0100711E667B61FA0141B0BDBCE876AB919B006559A9E137497A479859325B95496DE1",
+    "{FilenameWithExtension}": "jdhsj",
+    "{FullPath}": "Lists/test/31_.000",
+    "{HasAttachments}": false,
+    "{Identifier}": "Lists%252ftest%252f31_.000",
+    "{IsFolder}": false,
+    "{Link}": "https://reservoirlink.sharepoint.com/sites/MSSites/_layouts/15/listform.aspx?PageType=4&ListId=17e82ded%2Dcc34%2D4030%2Dab6a%2D639fe7680b9b&ID=31&ContentTypeID=0x0100711E667B61FA0141B0BDBCE876AB919B006559A9E137497A479859325B95496DE1",
+    "{Name}": "jdhsj",
+    "{Path}": "Lists/test/",
+    "{VersionNumber}": "1.0"
   }
 ]
