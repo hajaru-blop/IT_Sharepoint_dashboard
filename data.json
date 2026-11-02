@@ -649,7 +649,7 @@
     "{VersionNumber}": "1.0"
   },
   {
-    "@odata.etag": "\"1\"",
+    "@odata.etag": "\"2\"",
     "Author": {
       "@odata.type": "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
       "Claims": "i:0#.f|membership|siti.hajar@reservoirlink.com",
@@ -682,13 +682,13 @@
     "ID": 21,
     "ItemInternalId": "21",
     "Model": "LAPTOP",
-    "Modified": "2026-09-28T01:56:32Z",
+    "Modified": "2026-11-02T07:55:28Z",
     "Status": {
       "@odata.type": "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedReference",
-      "Id": 2,
-      "Value": "In Stock"
+      "Id": 1,
+      "Value": "Repair"
     },
-    "Status#Id": 2,
+    "Status#Id": 1,
     "Title": "QWE09",
     "Workbase": "MIRI",
     "{ContentType}": {
@@ -705,7 +705,7 @@
     "{Link}": "https://reservoirlink.sharepoint.com/sites/MSSites/_layouts/15/listform.aspx?PageType=4&ListId=17e82ded%2Dcc34%2D4030%2Dab6a%2D639fe7680b9b&ID=21&ContentTypeID=0x0100711E667B61FA0141B0BDBCE876AB919B006559A9E137497A479859325B95496DE1",
     "{Name}": "QWE09",
     "{Path}": "Lists/test/",
-    "{VersionNumber}": "1.0"
+    "{VersionNumber}": "2.0"
   },
   {
     "@odata.etag": "\"1\"",
