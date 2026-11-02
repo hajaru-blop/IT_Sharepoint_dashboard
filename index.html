@@ -13,11 +13,11 @@
       background-color: #f5f7fb;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #333;
-      padding: 10px;
+      padding: 12px;
       font-size: 0.8rem;
     }
 
-    /* Compact Glassmorphism Container */
+    /* Glassmorphism Container */
     .glass-card {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
@@ -25,8 +25,8 @@
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.6);
       box-shadow: 0 4px 12px rgba(149, 157, 165, 0.08);
-      padding: 10px 14px;
-      margin-bottom: 10px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
     }
 
     .filter-label {
@@ -35,7 +35,7 @@
       text-transform: uppercase;
       color: #6c757d;
       letter-spacing: 0.5px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
     .btn-reset {
@@ -57,7 +57,7 @@
     /* KPI Cards Styling */
     .kpi-card {
       border-left: 4px solid transparent;
-      padding: 8px 12px;
+      padding: 10px 14px;
     }
 
     .kpi-title {
@@ -69,7 +69,7 @@
     }
 
     .kpi-value {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 700;
       line-height: 1;
     }
@@ -92,13 +92,43 @@
       width: 100%;
     }
 
+    /* Scrollable Data Table */
+    .table-responsive {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .table {
+      font-size: 0.75rem;
+      margin-bottom: 0;
+    }
+
+    .table thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f1ecf7;
+      color: #5c3882;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      border-bottom: 2px solid #ddd;
+      z-index: 1;
+    }
+
+    .badge-status {
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
     .error-banner {
       background-color: #f8d7da;
       color: #842029;
       border: 1px solid #f5c2c7;
       border-radius: 6px;
       padding: 8px 14px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: none;
       font-size: 0.8rem;
       font-weight: 600;
@@ -111,28 +141,32 @@
     <!-- Error Notification -->
     <div id="errorBanner" class="error-banner"></div>
 
-    <!-- Compact Filter Section -->
+    <!-- Filter Section with Asset Name Search -->
     <div class="glass-card">
       <div class="row align-items-end g-2">
+        <div class="col-md-3">
+          <div class="filter-label">Search Asset Name</div>
+          <input type="text" id="filterSearchName" class="form-control form-control-sm" placeholder="Type name or keyword...">
+        </div>
         <div class="col-md-3">
           <div class="filter-label">Brand</div>
           <select id="filterBrand" class="form-select form-select-sm">
             <option value="All">All</option>
           </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <div class="filter-label">Workbase</div>
           <select id="filterWorkbase" class="form-select form-select-sm">
             <option value="All">All</option>
           </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <div class="filter-label">Status</div>
           <select id="filterStatus" class="form-select form-select-sm">
             <option value="All">All</option>
           </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <button id="btnReset" class="btn btn-reset w-100">Reset Filters</button>
         </div>
       </div>
@@ -167,7 +201,7 @@
     </div>
 
     <!-- Charts Row -->
-    <div class="row g-2">
+    <div class="row g-2 mb-2">
       <div class="col-md-4">
         <div class="glass-card mb-0">
           <div class="filter-label mb-2">Workbase</div>
@@ -193,6 +227,32 @@
         </div>
       </div>
     </div>
+
+    <!-- Inventory Data Table Section -->
+    <div class="glass-card mb-0">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="filter-label mb-0">Asset Inventory Records (<span id="recordCount">0</span>)</div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Title / Asset Name</th>
+              <th>Brand</th>
+              <th>Workbase</th>
+              <th>Company</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody">
+            <tr>
+              <td colspan="5" class="text-center text-muted">Loading inventory data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -211,7 +271,8 @@
 
     async function loadData() {
       try {
-        const response = await fetch('./data.json', { cache: 'no-cache' });
+        // Appended timestamp parameter to guarantee cache-busting
+        const response = await fetch(`./data.json?t=${Date.now()}`, { cache: 'no-store' });
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: Unable to load data.json`);
         }
@@ -257,21 +318,26 @@
     }
 
     function getFilteredData() {
+      const searchName = document.getElementById('filterSearchName').value.toLowerCase().trim();
       const selectedBrand = document.getElementById('filterBrand').value;
       const selectedWorkbase = document.getElementById('filterWorkbase').value;
       const selectedStatus = document.getElementById('filterStatus').value;
 
       return allItems.filter(item => {
+        const title = getVal(item, 'Title').toLowerCase();
+        const nameMatch = !searchName || title.includes(searchName);
         const brandMatch = selectedBrand === 'All' || getVal(item, 'Brand') === selectedBrand;
         const workbaseMatch = selectedWorkbase === 'All' || getVal(item, 'Workbase') === selectedWorkbase;
         const statusMatch = selectedStatus === 'All' || getVal(item, 'Status') === selectedStatus;
-        return brandMatch && workbaseMatch && statusMatch;
+
+        return nameMatch && brandMatch && workbaseMatch && statusMatch;
       });
     }
 
     function updateDashboard() {
       const filtered = getFilteredData();
 
+      // KPIs
       document.getElementById('kpiTotal').textContent = filtered.length;
       
       const inStock = filtered.filter(i => getVal(i, 'Status').toLowerCase() === 'in stock').length;
@@ -285,9 +351,50 @@
       document.getElementById('kpiUse').textContent = inUse;
       document.getElementById('kpiRepair').textContent = repair;
 
+      // Render Charts
       renderChart('chartWorkbase', 'Workbase', filtered, instance => workbaseChartInstance = instance, workbaseChartInstance, 'bar');
       renderChart('chartStatus', 'Status', filtered, instance => statusChartInstance = instance, statusChartInstance, 'doughnut');
       renderChart('chartCompany', 'Company', filtered, instance => companyChartInstance = instance, companyChartInstance, 'bar');
+
+      // Populate Table
+      renderTable(filtered);
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('inventoryTableBody');
+      document.getElementById('recordCount').textContent = data.length;
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No matching assets found.</td></tr>';
+        return;
+      }
+
+      let html = '';
+      data.forEach(item => {
+        const title = getVal(item, 'Title');
+        const brand = getVal(item, 'Brand');
+        const workbase = getVal(item, 'Workbase');
+        const company = getVal(item, 'Company');
+        const status = getVal(item, 'Status');
+
+        let badgeClass = 'bg-secondary';
+        const stLower = status.toLowerCase();
+        if (stLower === 'in stock') badgeClass = 'bg-warning text-dark';
+        else if (stLower === 'in use') badgeClass = 'bg-success';
+        else if (stLower.includes('repair')) badgeClass = 'bg-danger';
+
+        html += `
+          <tr>
+            <td class="fw-bold">${title}</td>
+            <td>${brand}</td>
+            <td>${workbase}</td>
+            <td>${company}</td>
+            <td><span class="badge ${badgeClass} badge-status">${status}</span></td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
     }
 
     function renderChart(canvasId, field, data, setInstance, existingInstance, chartType = 'bar') {
@@ -348,11 +455,14 @@
       setInstance(newChart);
     }
 
+    // Event Listeners
+    document.getElementById('filterSearchName').addEventListener('input', updateDashboard);
     document.getElementById('filterBrand').addEventListener('change', updateDashboard);
     document.getElementById('filterWorkbase').addEventListener('change', updateDashboard);
     document.getElementById('filterStatus').addEventListener('change', updateDashboard);
 
     document.getElementById('btnReset').addEventListener('click', () => {
+      document.getElementById('filterSearchName').value = '';
       document.getElementById('filterBrand').value = 'All';
       document.getElementById('filterWorkbase').value = 'All';
       document.getElementById('filterStatus').value = 'All';
