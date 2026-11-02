@@ -4,315 +4,358 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IT Inventory Dashboard</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <style>
-    :root {
-      --sp-purple: #6b469b;
-      --text-main: #0f172a;
-      --text-muted: #475569;
-    }
-
     body {
-      background: #ffffff;
-      min-height: 100vh;
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-      color: var(--text-main);
+      background-color: #f5f7fb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
       padding: 20px;
-      margin: 0;
     }
 
-    .dashboard-card {
-      background: rgba(248, 249, 252, 0.75);
+    /* Glassmorphism Container */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-radius: 16px;
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      box-shadow: 0 8px 30px 0 rgba(107, 70, 155, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 24px rgba(149, 157, 165, 0.1);
       padding: 20px;
-      height: 100%;
+      margin-bottom: 20px;
     }
 
-    .filter-group { flex: 1; min-width: 150px; }
-    .filter-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
-    .form-select { background: #fff; border-radius: 10px; border: 1px solid rgba(107, 70, 155, 0.18); padding: 7px 12px; font-size: 0.88rem; font-weight: 600; }
-    
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #6c757d;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+
     .btn-reset {
-      background: linear-gradient(135deg, #6b469b 0%, #4a2e71 100%);
-      color: #fff; font-weight: 600; font-size: 0.75rem; border-radius: 10px; padding: 9px 20px; border: none;
+      background-color: #5c3882;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
     }
 
-    .kpi-title { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
-    .kpi-value { font-family: 'Lora', Georgia, serif; font-size: 1.85rem; font-weight: 700; margin-top: 8px; }
+    .btn-reset:hover {
+      background-color: #4a2d6b;
+      color: #fff;
+    }
 
-    .border-accent-purple { border-left: 5px solid #6b469b !important; }
-    .border-accent-orange { border-left: 5px solid #ea580c !important; }
-    .border-accent-teal   { border-left: 5px solid #0d9488 !important; }
-    .border-accent-indigo { border-left: 5px solid #4f46e5 !important; }
+    /* KPI Cards Styling */
+    .kpi-card {
+      border-left: 5px solid transparent;
+    }
 
-    .chart-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 14px; }
-    .chart-container { position: relative; width: 100%; height: 200px; }
+    .kpi-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
 
-    #debug-status { font-size: 0.8rem; padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; }
-    .status-info { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-    .status-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-    .status-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .kpi-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .kpi-total { border-left-color: #6f42c1; }
+    .kpi-total .kpi-title { color: #6f42c1; }
+
+    .kpi-stock { border-left-color: #fd7e14; }
+    .kpi-stock .kpi-title { color: #fd7e14; }
+
+    .kpi-use { border-left-color: #20c997; }
+    .kpi-use .kpi-title { color: #20c997; }
+
+    .kpi-repair { border-left-color: #6610f2; }
+    .kpi-repair .kpi-title { color: #6610f2; }
+
+    .chart-container {
+      position: relative;
+      height: 280px;
+      width: 100%;
+    }
+
+    .error-banner {
+      background-color: #f8d7da;
+      color: #842029;
+      border: 1px solid #f5c2c7;
+      border-radius: 8px;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      display: none;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container-fluid px-0">
-    <div id="debug-status" class="status-info">Connecting to SharePoint REST API...</div>
+  <div class="container-fluid">
+    <!-- Error Notification -->
+    <div id="errorBanner" class="error-banner"></div>
 
-    <!-- Filters -->
-    <div class="dashboard-card mb-3">
-      <div class="d-flex align-items-end justify-content-between flex-wrap gap-3">
-        <div class="filter-group">
+    <!-- Filter Section -->
+    <div class="glass-card">
+      <div class="row align-items-end g-3">
+        <div class="col-md-3">
           <div class="filter-label">Brand</div>
-          <select id="filter-brand" class="form-select" onchange="applyFilters()"><option value="All">All</option></select>
+          <select id="filterBrand" class="form-select">
+            <option value="All">All</option>
+          </select>
         </div>
-        <div class="filter-group">
+        <div class="col-md-3">
           <div class="filter-label">Workbase</div>
-          <select id="filter-workbase" class="form-select" onchange="applyFilters()"><option value="All">All</option></select>
+          <select id="filterWorkbase" class="form-select">
+            <option value="All">All</option>
+          </select>
         </div>
-        <div class="filter-group">
+        <div class="col-md-3">
           <div class="filter-label">Status</div>
-          <select id="filter-status" class="form-select" onchange="applyFilters()"><option value="All">All</option></select>
+          <select id="filterStatus" class="form-select">
+            <option value="All">All</option>
+          </select>
         </div>
-        <div class="ms-auto">
-          <button class="btn btn-reset text-uppercase" onclick="resetFilters()">Reset Filters</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- KPI Cards -->
-    <div class="row g-3 mb-3">
-      <div class="col-6 col-md-3">
-        <div class="dashboard-card border-accent-purple">
-          <div class="kpi-title" style="color: #6b469b;">Total Assets</div>
-          <div class="kpi-value" id="kpi-total">0</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="dashboard-card border-accent-orange">
-          <div class="kpi-title" style="color: #ea580c;">In Stock</div>
-          <div class="kpi-value" id="kpi-instock">0</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="dashboard-card border-accent-teal">
-          <div class="kpi-title" style="color: #0d9488;">In Use</div>
-          <div class="kpi-value" id="kpi-inuse">0</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="dashboard-card border-accent-indigo">
-          <div class="kpi-title" style="color: #4f46e5;">Repair</div>
-          <div class="kpi-value" id="kpi-repair">0</div>
+        <div class="col-md-3">
+          <button id="btnReset" class="btn btn-reset w-100">Reset Filters</button>
         </div>
       </div>
     </div>
 
-    <!-- Middle Charts -->
-    <div class="row g-3 mb-3">
-      <div class="col-md-4">
-        <div class="dashboard-card">
-          <div class="chart-title">Workbase</div>
-          <div class="chart-container"><canvas id="chartWorkbase"></canvas></div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="dashboard-card">
-          <div class="chart-title">Status</div>
-          <div class="chart-container"><canvas id="chartStatus"></canvas></div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="dashboard-card">
-          <div class="chart-title">Company</div>
-          <div class="chart-container"><canvas id="chartCompany"></canvas></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom Chart -->
+    <!-- KPI Metrics Row -->
     <div class="row g-3">
-      <div class="col-12">
-        <div class="dashboard-card">
-          <div class="chart-title">Brand</div>
-          <div class="chart-container" style="height: 220px;"><canvas id="chartBrand"></canvas></div>
+      <div class="col-md-3">
+        <div class="glass-card kpi-card kpi-total">
+          <div class="kpi-title">Total Assets</div>
+          <div id="kpiTotal" class="kpi-value">0</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="glass-card kpi-card kpi-stock">
+          <div class="kpi-title">In Stock</div>
+          <div id="kpiStock" class="kpi-value">0</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="glass-card kpi-card kpi-use">
+          <div class="kpi-title">In Use</div>
+          <div id="kpiUse" class="kpi-value">0</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="glass-card kpi-card kpi-repair">
+          <div class="kpi-title">Repair</div>
+          <div id="kpiRepair" class="kpi-value">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="glass-card">
+          <div class="filter-label mb-3">Workbase</div>
+          <div class="chart-container">
+            <canvas id="chartWorkbase"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="glass-card">
+          <div class="filter-label mb-3">Status</div>
+          <div class="chart-container">
+            <canvas id="chartStatus"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="glass-card">
+          <div class="filter-label mb-3">Company</div>
+          <div class="chart-container">
+            <canvas id="chartCompany"></canvas>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const CONFIG = { listName: "IT Inventory", pollIntervalSeconds: 15 };
-    const EXECUTIVE_PALETTE = ["#6b469b", "#0284c7", "#0d9488", "#ea580c", "#4f46e5", "#059669", "#d97706", "#475569", "#2563eb", "#b45309", "#0891b2", "#7c3aed"];
+    let allItems = [];
+    let workbaseChartInstance = null;
+    let statusChartInstance = null;
+    let companyChartInstance = null;
 
-    let rawListItems = [];
-    let chartWorkbaseInstance = null;
-    let chartStatusInstance = null;
-    let chartCompanyInstance = null;
-    let chartBrandInstance = null;
-
-    function setDebugStatus(msg, type = "info") {
-      const el = document.getElementById("debug-status");
-      if (el) { el.className = `status-${type}`; el.innerHTML = msg; }
-    }
-
-    function parseFieldValue(val) {
-      if (val === null || val === undefined) return "Unknown";
+    // Helper to safely extract values from string or SharePoint Choice columns
+    function getVal(item, field) {
+      if (!item) return 'Unknown';
+      const val = item[field];
+      if (val === null || val === undefined) return 'Unknown';
       if (typeof val === 'object' && val.Value) return val.Value;
-      if (typeof val === 'object' && val.results) return val.results.join(', ');
-      const str = String(val).trim();
-      return str === "" ? "Unknown" : str;
+      return String(val).trim() || 'Unknown';
     }
 
-    // Fully encoded, sanitized XHR request engine
-    function fetchItemsXHR() {
-      return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        const endpoint = "https://reservoirlink.sharepoint.com/sites/MSSites/_api/web/lists/getByTitle('IT%20Inventory')/items?$top=5000";
-        
-        try {
-          xhr.open("GET", endpoint, true);
-        } catch (err) {
-          reject(new Error("Invalid URL syntax: " + err.message));
-          return;
-        }
-
-        xhr.setRequestHeader("Accept", "application/json; odata=nometadata");
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onload = function() {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            try {
-              const res = JSON.parse(xhr.responseText);
-              resolve(res.value || (res.d && res.d.results) || []);
-            } catch (err) {
-              reject(new Error("Failed to parse JSON response"));
-            }
-          } else {
-            reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText || 'Access Denied or Not Found'}`));
-          }
-        };
-
-        xhr.onerror = function() {
-          reject(new Error("Network Error occurred in iframe sandbox"));
-        };
-
-        xhr.send();
-      });
-    }
-
-    async function loadSharePointData() {
+    // Load data.json created by Power Automate
+    async function loadData() {
       try {
-        setDebugStatus(`Fetching items from '${CONFIG.listName}'...`, "info");
-        const items = await fetchItemsXHR();
-
-        if (items.length === 0) {
-          setDebugStatus(`Connected successfully, but <strong>0 items</strong> were found in '${CONFIG.listName}'.`, "error");
-        } else {
-          setDebugStatus(`Connected! Successfully loaded <strong>${items.length} items</strong>.`, "success");
+        const response = await fetch('./data.json', { cache: 'no-cache' });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: Unable to load data.json`);
         }
-
-        rawListItems = items.map(item => ({
-          ID: item.ID,
-          Model: parseFieldValue(item.Title),
-          Company: parseFieldValue(item.Company),
-          Brand: parseFieldValue(item.Brand),
-          Workbase: parseFieldValue(item.Workbase),
-          Status: parseFieldValue(item.Status)
-        }));
-
-        populateFilterDropdowns(rawListItems);
-        applyFilters();
-      } catch (error) {
-        console.error(error);
-        setDebugStatus(`<strong>Error:</strong> ${error.message}`, "error");
+        const data = await response.json();
+        allItems = Array.isArray(data) ? data : (data.value || []);
+        
+        populateDropdowns();
+        updateDashboard();
+      } catch (err) {
+        const banner = document.getElementById('errorBanner');
+        banner.style.display = 'block';
+        banner.innerText = `Error loading data: ${err.message}. Ensure Power Automate has saved data.json in your GitHub repository.`;
       }
     }
 
-    function populateFilterDropdowns(items) {
-      const bSel = document.getElementById("filter-brand"), wSel = document.getElementById("filter-workbase"), sSel = document.getElementById("filter-status");
-      const cB = bSel.value, cW = wSel.value, cS = sSel.value;
-      const brands = ["All", ...new Set(items.map(i => i.Brand))].sort();
-      const workbases = ["All", ...new Set(items.map(i => i.Workbase))].sort();
-      const statuses = ["All", ...new Set(items.map(i => i.Status))].sort();
+    // Dynamically fill filter dropdowns
+    function populateDropdowns() {
+      const brands = new Set();
+      const workbases = new Set();
+      const statuses = new Set();
 
-      bSel.innerHTML = brands.map(b => `<option value="${b}">${b}</option>`).join("");
-      wSel.innerHTML = workbases.map(w => `<option value="${w}">${w}</option>`).join("");
-      sSel.innerHTML = statuses.map(s => `<option value="${s}">${s}</option>`).join("");
-
-      if (brands.includes(cB)) bSel.value = cB;
-      if (workbases.includes(cW)) wSel.value = cW;
-      if (statuses.includes(cS)) sSel.value = cS;
-    }
-
-    function applyFilters() {
-      const bVal = document.getElementById("filter-brand").value;
-      const wVal = document.getElementById("filter-workbase").value;
-      const sVal = document.getElementById("filter-status").value;
-
-      const filtered = rawListItems.filter(item => {
-        return (bVal === "All" || item.Brand === bVal) && (wVal === "All" || item.Workbase === wVal) && (sVal === "All" || item.Status === sVal);
+      allItems.forEach(item => {
+        brands.add(getVal(item, 'Brand'));
+        workbases.add(getVal(item, 'Workbase'));
+        statuses.add(getVal(item, 'Status'));
       });
 
-      updateKPIs(filtered);
-      if (typeof Chart !== 'undefined') renderCharts(filtered);
+      fillSelect('filterBrand', Array.from(brands));
+      fillSelect('filterWorkbase', Array.from(workbases));
+      fillSelect('filterStatus', Array.from(statuses));
     }
 
-    function resetFilters() {
-      document.getElementById("filter-brand").value = "All";
-      document.getElementById("filter-workbase").value = "All";
-      document.getElementById("filter-status").value = "All";
-      applyFilters();
+    function fillSelect(elementId, values) {
+      const select = document.getElementById(elementId);
+      select.innerHTML = '<option value="All">All</option>';
+      values.sort().forEach(val => {
+        if (val !== 'Unknown') {
+          const opt = document.createElement('option');
+          opt.value = val;
+          opt.textContent = val;
+          select.appendChild(opt);
+        }
+      });
     }
 
-    function updateKPIs(items) {
-      document.getElementById("kpi-total").innerText = items.length;
-      document.getElementById("kpi-instock").innerText = items.filter(i => ["in stock", "instock", "available"].includes(i.Status.toLowerCase())).length;
-      document.getElementById("kpi-inuse").innerText = items.filter(i => ["in use", "inuse", "assigned"].includes(i.Status.toLowerCase())).length;
-      document.getElementById("kpi-repair").innerText = items.filter(i => ["repair", "under repair", "in repair", "faulty"].includes(i.Status.toLowerCase())).length;
+    // Filter items based on active UI selections
+    function getFilteredData() {
+      const selectedBrand = document.getElementById('filterBrand').value;
+      const selectedWorkbase = document.getElementById('filterWorkbase').value;
+      const selectedStatus = document.getElementById('filterStatus').value;
+
+      return allItems.filter(item => {
+        const brandMatch = selectedBrand === 'All' || getVal(item, 'Brand') === selectedBrand;
+        const workbaseMatch = selectedWorkbase === 'All' || getVal(item, 'Workbase') === selectedWorkbase;
+        const statusMatch = selectedStatus === 'All' || getVal(item, 'Status') === selectedStatus;
+        return brandMatch && workbaseMatch && statusMatch;
+      });
     }
 
-    function countByProperty(items, prop) {
-      return items.reduce((acc, curr) => { const v = curr[prop] || "Unknown"; acc[v] = (acc[v] || 0) + 1; return acc; }, {});
+    // Recalculate KPIs and redraw charts
+    function updateDashboard() {
+      const filtered = getFilteredData();
+
+      // Total Assets
+      document.getElementById('kpiTotal').textContent = filtered.length;
+      
+      // Status KPIs
+      const inStock = filtered.filter(i => getVal(i, 'Status').toLowerCase() === 'in stock').length;
+      const inUse = filtered.filter(i => getVal(i, 'Status').toLowerCase() === 'in use').length;
+      const repair = filtered.filter(i => {
+        const s = getVal(i, 'Status').toLowerCase();
+        return s === 'repair' || s === 'under repair';
+      }).length;
+
+      document.getElementById('kpiStock').textContent = inStock;
+      document.getElementById('kpiUse').textContent = inUse;
+      document.getElementById('kpiRepair').textContent = repair;
+
+      // Render Charts
+      renderChart('chartWorkbase', 'Workbase', filtered, instance => workbaseChartInstance = instance, workbaseChartInstance);
+      renderChart('chartStatus', 'Status', filtered, instance => statusChartInstance = instance, statusChartInstance);
+      renderChart('chartCompany', 'Company', filtered, instance => companyChartInstance = instance, companyChartInstance);
     }
 
-    function renderCharts(items) {
-      const labelFont = { family: "'Segoe UI', sans-serif", size: 11, weight: "600" };
-      const numberFont = { family: "'Lora', Georgia, serif", size: 11, weight: "600" };
+    // Render bar charts dynamically
+    function renderChart(canvasId, field, data, setInstance, existingInstance) {
+      const counts = {};
+      data.forEach(item => {
+        const key = getVal(item, field);
+        counts[key] = (counts[key] || 0) + 1;
+      });
 
-      const wbCounts = countByProperty(items, "Workbase");
-      const ctxWb = document.getElementById("chartWorkbase").getContext("2d");
-      if (chartWorkbaseInstance) chartWorkbaseInstance.destroy();
-      chartWorkbaseInstance = new Chart(ctxWb, { type: "pie", data: { labels: Object.keys(wbCounts), datasets: [{ data: Object.values(wbCounts), backgroundColor: EXECUTIVE_PALETTE.slice(0, Object.keys(wbCounts).length), borderWidth: 2, borderColor: '#ffffff' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "right", labels: { font: labelFont, color: "#0f172a" } } } } });
+      const labels = Object.keys(counts);
+      const values = Object.values(counts);
 
-      const statusCounts = countByProperty(items, "Status");
-      const ctxStatus = document.getElementById("chartStatus").getContext("2d");
-      if (chartStatusInstance) chartStatusInstance.destroy();
-      chartStatusInstance = new Chart(ctxStatus, { type: "bar", data: { labels: Object.keys(statusCounts), datasets: [{ data: Object.values(statusCounts), backgroundColor: "#ea580c", borderRadius: 6 }] }, options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { stepSize: 1, font: numberFont, color: "#475569" }, grid: { color: "rgba(107, 70, 155, 0.08)" } }, y: { ticks: { font: labelFont, color: "#0f172a" }, grid: { display: false } } } } });
+      if (existingInstance) {
+        existingInstance.destroy();
+      }
 
-      const compCounts = countByProperty(items, "Company");
-      const ctxComp = document.getElementById("chartCompany").getContext("2d");
-      if (chartCompanyInstance) chartCompanyInstance.destroy();
-      chartCompanyInstance = new Chart(ctxComp, { type: "doughnut", data: { labels: Object.keys(compCounts), datasets: [{ data: Object.values(compCounts), backgroundColor: EXECUTIVE_PALETTE.slice(0, Object.keys(compCounts).length), borderWidth: 2, borderColor: '#ffffff' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "right", labels: { font: labelFont, color: "#0f172a" } } } } });
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      const newChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Count',
+            data: values,
+            backgroundColor: 'rgba(92, 56, 130, 0.75)',
+            borderColor: '#5c3882',
+            borderWidth: 1,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1 }
+            }
+          }
+        }
+      });
 
-      const brandCounts = countByProperty(items, "Brand");
-      const ctxBrand = document.getElementById("chartBrand").getContext("2d");
-      if (chartBrandInstance) chartBrandInstance.destroy();
-      chartBrandInstance = new Chart(ctxBrand, { type: "bar", data: { labels: Object.keys(brandCounts), datasets: [{ data: Object.values(brandCounts), backgroundColor: "#6b469b", borderRadius: 6 }] }, options: { indexAxis: "x", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { stepSize: 1, font: numberFont, color: "#475569" }, grid: { color: "rgba(107, 70, 155, 0.08)" } }, x: { ticks: { font: labelFont, color: "#0f172a" }, grid: { display: false } } } } });
+      setInstance(newChart);
     }
 
-    window.onload = () => {
-      loadSharePointData();
-      setInterval(loadSharePointData, CONFIG.pollIntervalSeconds * 1000);
-    };
+    // Event Listeners
+    document.getElementById('filterBrand').addEventListener('change', updateDashboard);
+    document.getElementById('filterWorkbase').addEventListener('change', updateDashboard);
+    document.getElementById('filterStatus').addEventListener('change', updateDashboard);
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+      document.getElementById('filterBrand').value = 'All';
+      document.getElementById('filterWorkbase').value = 'All';
+      document.getElementById('filterStatus').value = 'All';
+      updateDashboard();
+    });
+
+    // Initialize on page ready
+    document.addEventListener('DOMContentLoaded', loadData);
   </script>
 </body>
 </html>
