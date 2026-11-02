@@ -13,38 +13,39 @@
       background-color: #f5f7fb;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #333;
-      padding: 20px;
+      padding: 10px;
+      font-size: 0.8rem;
     }
 
-    /* Glassmorphism Container */
+    /* Compact Glassmorphism Container */
     .glass-card {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-radius: 16px;
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 8px 24px rgba(149, 157, 165, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(149, 157, 165, 0.08);
+      padding: 10px 14px;
+      margin-bottom: 10px;
     }
 
     .filter-label {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
       color: #6c757d;
       letter-spacing: 0.5px;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
     }
 
     .btn-reset {
       background-color: #5c3882;
       color: #fff;
       font-weight: 600;
-      border-radius: 8px;
+      border-radius: 6px;
       border: none;
-      padding: 8px 20px;
-      font-size: 0.85rem;
+      padding: 5px 12px;
+      font-size: 0.75rem;
       text-transform: uppercase;
     }
 
@@ -55,19 +56,20 @@
 
     /* KPI Cards Styling */
     .kpi-card {
-      border-left: 5px solid transparent;
+      border-left: 4px solid transparent;
+      padding: 8px 12px;
     }
 
     .kpi-title {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
     .kpi-value {
-      font-size: 2.2rem;
+      font-size: 1.4rem;
       font-weight: 700;
       line-height: 1;
     }
@@ -86,7 +88,7 @@
 
     .chart-container {
       position: relative;
-      height: 280px;
+      height: 180px;
       width: 100%;
     }
 
@@ -94,38 +96,39 @@
       background-color: #f8d7da;
       color: #842029;
       border: 1px solid #f5c2c7;
-      border-radius: 8px;
-      padding: 12px 20px;
-      margin-bottom: 20px;
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin-bottom: 10px;
       display: none;
+      font-size: 0.8rem;
       font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-  <div class="container-fluid">
+  <div class="container-fluid p-0">
     <!-- Error Notification -->
     <div id="errorBanner" class="error-banner"></div>
 
-    <!-- Filter Section -->
+    <!-- Compact Filter Section -->
     <div class="glass-card">
-      <div class="row align-items-end g-3">
+      <div class="row align-items-end g-2">
         <div class="col-md-3">
           <div class="filter-label">Brand</div>
-          <select id="filterBrand" class="form-select">
+          <select id="filterBrand" class="form-select form-select-sm">
             <option value="All">All</option>
           </select>
         </div>
         <div class="col-md-3">
           <div class="filter-label">Workbase</div>
-          <select id="filterWorkbase" class="form-select">
+          <select id="filterWorkbase" class="form-select form-select-sm">
             <option value="All">All</option>
           </select>
         </div>
         <div class="col-md-3">
           <div class="filter-label">Status</div>
-          <select id="filterStatus" class="form-select">
+          <select id="filterStatus" class="form-select form-select-sm">
             <option value="All">All</option>
           </select>
         </div>
@@ -136,27 +139,27 @@
     </div>
 
     <!-- KPI Metrics Row -->
-    <div class="row g-3">
+    <div class="row g-2 mb-2">
       <div class="col-md-3">
-        <div class="glass-card kpi-card kpi-total">
+        <div class="glass-card kpi-card kpi-total mb-0">
           <div class="kpi-title">Total Assets</div>
           <div id="kpiTotal" class="kpi-value">0</div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="glass-card kpi-card kpi-stock">
+        <div class="glass-card kpi-card kpi-stock mb-0">
           <div class="kpi-title">In Stock</div>
           <div id="kpiStock" class="kpi-value">0</div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="glass-card kpi-card kpi-use">
+        <div class="glass-card kpi-card kpi-use mb-0">
           <div class="kpi-title">In Use</div>
           <div id="kpiUse" class="kpi-value">0</div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="glass-card kpi-card kpi-repair">
+        <div class="glass-card kpi-card kpi-repair mb-0">
           <div class="kpi-title">Repair</div>
           <div id="kpiRepair" class="kpi-value">0</div>
         </div>
@@ -164,26 +167,26 @@
     </div>
 
     <!-- Charts Row -->
-    <div class="row g-3">
+    <div class="row g-2">
       <div class="col-md-4">
-        <div class="glass-card">
-          <div class="filter-label mb-3">Workbase</div>
+        <div class="glass-card mb-0">
+          <div class="filter-label mb-2">Workbase</div>
           <div class="chart-container">
             <canvas id="chartWorkbase"></canvas>
           </div>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="glass-card">
-          <div class="filter-label mb-3">Status</div>
+        <div class="glass-card mb-0">
+          <div class="filter-label mb-2">Status Breakdown</div>
           <div class="chart-container">
             <canvas id="chartStatus"></canvas>
           </div>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="glass-card">
-          <div class="filter-label mb-3">Company</div>
+        <div class="glass-card mb-0">
+          <div class="filter-label mb-2">Company</div>
           <div class="chart-container">
             <canvas id="chartCompany"></canvas>
           </div>
@@ -198,7 +201,6 @@
     let statusChartInstance = null;
     let companyChartInstance = null;
 
-    // Helper to safely extract values from string or SharePoint Choice columns
     function getVal(item, field) {
       if (!item) return 'Unknown';
       const val = item[field];
@@ -207,7 +209,6 @@
       return String(val).trim() || 'Unknown';
     }
 
-    // Load data.json created by Power Automate
     async function loadData() {
       try {
         const response = await fetch('./data.json', { cache: 'no-cache' });
@@ -226,7 +227,6 @@
       }
     }
 
-    // Dynamically fill filter dropdowns
     function populateDropdowns() {
       const brands = new Set();
       const workbases = new Set();
@@ -256,7 +256,6 @@
       });
     }
 
-    // Filter items based on active UI selections
     function getFilteredData() {
       const selectedBrand = document.getElementById('filterBrand').value;
       const selectedWorkbase = document.getElementById('filterWorkbase').value;
@@ -270,14 +269,11 @@
       });
     }
 
-    // Recalculate KPIs and redraw charts
     function updateDashboard() {
       const filtered = getFilteredData();
 
-      // Total Assets
       document.getElementById('kpiTotal').textContent = filtered.length;
       
-      // Status KPIs
       const inStock = filtered.filter(i => getVal(i, 'Status').toLowerCase() === 'in stock').length;
       const inUse = filtered.filter(i => getVal(i, 'Status').toLowerCase() === 'in use').length;
       const repair = filtered.filter(i => {
@@ -289,14 +285,12 @@
       document.getElementById('kpiUse').textContent = inUse;
       document.getElementById('kpiRepair').textContent = repair;
 
-      // Render Charts
-      renderChart('chartWorkbase', 'Workbase', filtered, instance => workbaseChartInstance = instance, workbaseChartInstance);
-      renderChart('chartStatus', 'Status', filtered, instance => statusChartInstance = instance, statusChartInstance);
-      renderChart('chartCompany', 'Company', filtered, instance => companyChartInstance = instance, companyChartInstance);
+      renderChart('chartWorkbase', 'Workbase', filtered, instance => workbaseChartInstance = instance, workbaseChartInstance, 'bar');
+      renderChart('chartStatus', 'Status', filtered, instance => statusChartInstance = instance, statusChartInstance, 'doughnut');
+      renderChart('chartCompany', 'Company', filtered, instance => companyChartInstance = instance, companyChartInstance, 'bar');
     }
 
-    // Render bar charts dynamically
-    function renderChart(canvasId, field, data, setInstance, existingInstance) {
+    function renderChart(canvasId, field, data, setInstance, existingInstance, chartType = 'bar') {
       const counts = {};
       data.forEach(item => {
         const key = getVal(item, field);
@@ -310,39 +304,50 @@
         existingInstance.destroy();
       }
 
+      const palette = [
+        '#6f42c1', '#fd7e14', '#20c997', '#6610f2', 
+        '#0d6efd', '#ffc107', '#d63384', '#17a2b8'
+      ];
+
       const ctx = document.getElementById(canvasId).getContext('2d');
+      const isBar = chartType === 'bar';
+
       const newChart = new Chart(ctx, {
-        type: 'bar',
+        type: chartType,
         data: {
           labels: labels,
           datasets: [{
             label: 'Count',
             data: values,
-            backgroundColor: 'rgba(92, 56, 130, 0.75)',
-            borderColor: '#5c3882',
-            borderWidth: 1,
-            borderRadius: 6
+            backgroundColor: isBar ? 'rgba(92, 56, 130, 0.75)' : palette.slice(0, labels.length),
+            borderColor: isBar ? '#5c3882' : '#ffffff',
+            borderWidth: isBar ? 1 : 2,
+            borderRadius: isBar ? 4 : 0
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { display: false }
+            legend: { 
+              display: !isBar,
+              position: 'bottom',
+              labels: { boxWidth: 8, padding: 8, font: { size: 10 } }
+            }
           },
-          scales: {
+          scales: isBar ? {
+            x: { ticks: { font: { size: 10 } } },
             y: {
               beginAtZero: true,
-              ticks: { stepSize: 1 }
+              ticks: { stepSize: 1, font: { size: 10 } }
             }
-          }
+          } : {}
         }
       });
 
       setInstance(newChart);
     }
 
-    // Event Listeners
     document.getElementById('filterBrand').addEventListener('change', updateDashboard);
     document.getElementById('filterWorkbase').addEventListener('change', updateDashboard);
     document.getElementById('filterStatus').addEventListener('change', updateDashboard);
@@ -354,7 +359,6 @@
       updateDashboard();
     });
 
-    // Initialize on page ready
     document.addEventListener('DOMContentLoaded', loadData);
   </script>
 </body>
